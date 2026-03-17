@@ -1,0 +1,22 @@
+serviceName: ms-course-service
+
+image:
+  repository: astha-platform/ms-course-service
+  tag: "latest"
+
+config:
+  SERVICE_NAME: "ms-course-service"
+  DATABASE_HOST: "10.1.0.2"
+  DATABASE_NAME: "courses"
+  DATABASE_PORT: "5432"
+  REDIS_HOST: "redis.prod.svc.cluster.local"
+  REDIS_PORT: "6379"
+  GCS_CERTIFICATES_BUCKET: "astha-certificates-prod"
+
+externalSecret:
+  enabled: true
+  secrets:
+    - key: postgres-courses-password
+      property: DATABASE_PASSWORD
+    - key: github-api-token
+      property: GITHUB_API_TOKEN

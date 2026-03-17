@@ -1,0 +1,21 @@
+serviceName: ms-notification-service
+
+image:
+  repository: astha-platform/ms-notification-service
+  tag: "latest"
+
+config:
+  SERVICE_NAME: "ms-notification-service"
+  DATABASE_HOST: "10.1.0.2"
+  DATABASE_NAME: "notifications"
+  DATABASE_PORT: "5432"
+  REDIS_HOST: "redis.dev.svc.cluster.local"
+  REDIS_PORT: "6379"
+
+externalSecret:
+  enabled: true
+  secrets:
+    - key: postgres-notifications-password
+      property: DATABASE_PASSWORD
+    - key: sendgrid-api-key
+      property: SENDGRID_API_KEY

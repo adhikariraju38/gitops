@@ -1,0 +1,88 @@
+# =============================================================================
+# ApplicationSet — Matrix Generator: 8 Services x 3 Environments = 24 Apps
+# =============================================================================
+# ArgoCD automatically creates and manages one Application per combination.
+# Adding a new service or environment automatically generates new apps.
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform-services
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          # Generator 1: All microservices
+          - list:
+              elements:
+                - service: ms-authentication-service
+                  valuesFile: authentication.yaml
+                - service: ms-authorization-service
+                  valuesFile: authorization.yaml
+                - service: ms-user-management-service
+                  valuesFile: user-management.yaml
+                - service: ms-course-service
+                  valuesFile: course.yaml
+                - service: ms-notification-service
+                  valuesFile: notification.yaml
+                - service: ms-questionnaires-service
+                  valuesFile: questionnaires.yaml
+                - service: ms-api-gateway-service
+                  valuesFile: api-gateway.yaml
+                - service: ms-ui-application
+                  valuesFile: ui-application.yaml
+
+          # Generator 2: Environments
+          - list:
+              elements:
+                - env: dev
+                  namespace: dev
+                  project: dev
+                  envDir: dev
+                  autoSync: "true"
+                - env: staging
+                  namespace: staging
+                  project: staging
+                  envDir: staging
+                  autoSync: "true"
+                - env: prod
+                  namespace: prod
+                  project: production
+                  envDir: production
+                  autoSync: "false"
+
+  template:
+    metadata:
+      name: "{{service}}-{{env}}"
+      labels:
+        app.kubernetes.io/part-of: astha-platform
+        environment: "{{env}}"
+    spec:
+      project: "{{project}}"
+
+      source:
+        repoURL: https://github.com/adhikariraju38/gitops.git
+        targetRevision: main
+        path: charts/microservice
+        helm:
+          valueFiles:
+            # Layer 1: Chart defaults (charts/microservice/values.yaml)
+            # Layer 2: Environment globals
+            - ../../environments/{{envDir}}/values-global.yaml
+            # Layer 3: Service-specific overrides
+            - ../../environments/{{envDir}}/{{valuesFile}}
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{namespace}}"
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=false
+          - ServerSideApply=true
+          - RespectIgnoreDifferences=true

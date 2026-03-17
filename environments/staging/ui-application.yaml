@@ -1,0 +1,37 @@
+serviceName: ms-ui-application
+
+image:
+  repository: astha-platform/ms-ui-application
+  tag: "latest"
+
+containerPort: 3000
+
+service:
+  port: 3000
+
+config:
+  SERVICE_NAME: "ms-ui-application"
+  NEXT_PUBLIC_API_URL: "http://ms-api-gateway-service.staging.svc.cluster.local:8080"
+
+probes:
+  startup:
+    enabled: true
+    path: /
+    periodSeconds: 5
+    failureThreshold: 30
+  liveness:
+    enabled: true
+    path: /
+    periodSeconds: 15
+    failureThreshold: 3
+  readiness:
+    enabled: true
+    path: /
+    periodSeconds: 10
+    failureThreshold: 3
+
+externalSecret:
+  enabled: false
+
+podLabels:
+  tier: frontend

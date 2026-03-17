@@ -1,0 +1,61 @@
+# =============================================================================
+# Infrastructure ApplicationSet — Databases + Gateway per Environment
+# =============================================================================
+# Sync wave: infrastructure deploys BEFORE services
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - component: databases
+                  path: infrastructure/databases
+                - component: gateway
+                  path: infrastructure/gateway
+          - list:
+              elements:
+                - env: dev
+                  namespace: dev
+                  project: dev
+                - env: staging
+                  namespace: staging
+                  project: staging
+                - env: prod
+                  namespace: prod
+                  project: production
+
+  template:
+    metadata:
+      name: "infra-{{component}}-{{env}}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "-1"
+      labels:
+        app.kubernetes.io/part-of: astha-platform
+        environment: "{{env}}"
+        layer: infrastructure
+    spec:
+      project: "{{project}}"
+
+      source:
+        repoURL: https://github.com/adhikariraju38/gitops.git
+        targetRevision: main
+        path: "{{path}}/{{env}}"
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{namespace}}"
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=false
+          - ServerSideApply=true

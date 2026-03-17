@@ -1,0 +1,31 @@
+# =============================================================================
+# Dev Environment — Global Overrides
+# =============================================================================
+# Applied to ALL services in dev via ArgoCD ApplicationSet multi-valueFile
+# =============================================================================
+
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+config:
+  LOG_LEVEL: "debug"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://signoz-a9941162-otel-collector.observability:4317"
+
+hpa:
+  enabled: false
+
+pdb:
+  enabled: false
+
+rollout:
+  enabled: false

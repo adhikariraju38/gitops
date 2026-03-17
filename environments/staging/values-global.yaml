@@ -1,0 +1,29 @@
+# =============================================================================
+# Staging Environment — Global Overrides
+# =============================================================================
+
+replicaCount: 2
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+config:
+  LOG_LEVEL: "info"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://signoz-a9941162-otel-collector.observability:4317"
+
+hpa:
+  enabled: false
+
+pdb:
+  enabled: false
+
+rollout:
+  enabled: false

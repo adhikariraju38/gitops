@@ -1,0 +1,167 @@
+# =============================================================================
+# Envoy Gateway Config — Dev Environment
+# =============================================================================
+# This ConfigMap is mounted into the API Gateway pod.
+# Routes match the service DNS in the dev namespace.
+# =============================================================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envoy-config
+  namespace: dev
+data:
+  envoy.yaml: |
+    admin:
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 9901
+
+    static_resources:
+      listeners:
+        - name: main
+          address:
+            socket_address:
+              address: 0.0.0.0
+              port_value: 8080
+          filter_chains:
+            - filters:
+                - name: envoy.filters.network.http_connection_manager
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                    stat_prefix: ingress_http
+                    codec_type: AUTO
+                    route_config:
+                      name: local_route
+                      virtual_hosts:
+                        - name: backend
+                          domains: ["*"]
+                          routes:
+                            # Health check
+                            - match: { path: "/health" }
+                              direct_response:
+                                status: 200
+                                body: { inline_string: '{"status":"healthy"}' }
+                            - match: { path: "/ready" }
+                              direct_response:
+                                status: 200
+                                body: { inline_string: '{"status":"ready"}' }
+
+                            # Authentication
+                            - match: { prefix: "/api/v1/auth" }
+                              route:
+                                cluster: authentication
+                                timeout: 30s
+
+                            # Courses + Certificates + Pricing + Enrollments
+                            - match: { prefix: "/api/v1/courses" }
+                              route: { cluster: courses, timeout: 30s }
+                            - match: { prefix: "/certificates" }
+                              route: { cluster: courses, timeout: 30s }
+                            - match: { prefix: "/pricing" }
+                              route: { cluster: courses, timeout: 30s }
+                            - match: { prefix: "/enrollments" }
+                              route: { cluster: courses, timeout: 30s }
+
+                            # Questionnaires
+                            - match: { prefix: "/api/v1/organizations" }
+                              route: { cluster: questionnaires, timeout: 30s }
+
+                            # User Management
+                            - match: { prefix: "/api/v1/users" }
+                              route: { cluster: user-management, timeout: 30s }
+                            - match: { prefix: "/organizations" }
+                              route: { cluster: user-management, timeout: 30s }
+
+                            # Notifications
+                            - match: { prefix: "/api/v1/notifications" }
+                              route: { cluster: notifications, timeout: 30s }
+
+                            # UI catch-all
+                            - match: { prefix: "/" }
+                              route: { cluster: ui, timeout: 30s }
+
+                    http_filters:
+                      - name: envoy.filters.http.router
+                        typed_config:
+                          "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+      clusters:
+        - name: authentication
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: authentication
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: ms-authentication-service.dev.svc.cluster.local
+                          port_value: 5000
+
+        - name: user-management
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: user-management
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: ms-user-management-service.dev.svc.cluster.local
+                          port_value: 5000
+
+        - name: courses
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: courses
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: ms-course-service.dev.svc.cluster.local
+                          port_value: 5000
+
+        - name: questionnaires
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: questionnaires
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: ms-questionnaires-service.dev.svc.cluster.local
+                          port_value: 5000
+
+        - name: notifications
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: notifications
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: ms-notification-service.dev.svc.cluster.local
+                          port_value: 5000
+
+        - name: ui
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: ui
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: ms-ui-application.dev.svc.cluster.local
+                          port_value: 3000

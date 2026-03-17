@@ -1,0 +1,110 @@
+# =============================================================================
+# values.yaml — Generic Microservice Defaults (GKE Autopilot)
+# =============================================================================
+# Each service overrides only what's different in environments/{env}/{service}.yaml
+# =============================================================================
+
+serviceName: my-service
+
+replicaCount: 1
+
+image:
+  registry: us-central1-docker.pkg.dev
+  project: trail-01-490507
+  repository: astha-platform/my-service
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+containerPort: 5000
+
+service:
+  type: ClusterIP
+  port: 5000
+
+# --- Health Probes ---
+probes:
+  startup:
+    enabled: true
+    path: /health
+    periodSeconds: 5
+    failureThreshold: 60
+  liveness:
+    enabled: true
+    path: /health
+    periodSeconds: 15
+    failureThreshold: 3
+  readiness:
+    enabled: true
+    path: /health
+    periodSeconds: 10
+    failureThreshold: 3
+
+# --- Resources (GKE Autopilot minimums: 250m CPU, 512Mi memory) ---
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# --- Environment Variables (non-sensitive) ---
+config:
+  LOG_LEVEL: "info"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://signoz-a9941162-otel-collector.observability:4317"
+  OTEL_SERVICE_NAME: "my-service"
+
+# --- ServiceAccount ---
+serviceAccount:
+  create: false
+  name: "app-sa"
+  annotations: {}
+
+# --- Security Context ---
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
+
+# --- Extra Pod Labels ---
+podLabels:
+  tier: backend
+
+# --- ExternalSecret ---
+externalSecret:
+  enabled: true
+  refreshInterval: 1h
+  secretStore: gcp-secret-manager
+  secrets: []
+  # - key: postgres-user_management-password    # GCP Secret Manager key
+  #   property: password                         # K8s secret data key
+
+# --- HPA (Horizontal Pod Autoscaler) ---
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# --- PDB (Pod Disruption Budget) ---
+pdb:
+  enabled: false
+  minAvailable: 1
+
+# --- Argo Rollout (progressive delivery) ---
+rollout:
+  enabled: false
+  strategy:
+    canary:
+      steps:
+        - setWeight: 10
+        - pause: { duration: 2m }
+        - setWeight: 30
+        - pause: { duration: 2m }
+        - setWeight: 60
+        - pause: { duration: 2m }
+        - setWeight: 100

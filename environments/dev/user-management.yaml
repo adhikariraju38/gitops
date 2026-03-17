@@ -1,0 +1,21 @@
+serviceName: ms-user-management-service
+
+image:
+  repository: astha-platform/ms-user-management-service
+  tag: "latest"
+
+config:
+  SERVICE_NAME: "ms-user-management-service"
+  DATABASE_HOST: "10.1.0.2"
+  DATABASE_NAME: "user_management"
+  DATABASE_PORT: "5432"
+  REDIS_HOST: "redis.dev.svc.cluster.local"
+  REDIS_PORT: "6379"
+
+externalSecret:
+  enabled: true
+  secrets:
+    - key: postgres-user_management-password
+      property: DATABASE_PASSWORD
+    - key: stripe-api-key
+      property: STRIPE_API_KEY
