@@ -1,7 +1,7 @@
 serviceName: ms-user-management-service
 image:
   repository: astha-platform/ms-user-management-service
-  tag: "sha-e1af2b5"
+  tag: "sha-a34ebaf"
 config:
   APP_NAME: "MsUserManagementService"
   APP_PORT: "5000"
