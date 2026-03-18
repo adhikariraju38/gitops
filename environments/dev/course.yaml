@@ -1,7 +1,7 @@
 serviceName: ms-course-service
 image:
   repository: astha-platform/ms-course-service
-  tag: "sha-0f8addf"
+  tag: "sha-f867f49"
 config:
   APP_NAME: "MsCourseService"
   APP_PORT: "5000"
