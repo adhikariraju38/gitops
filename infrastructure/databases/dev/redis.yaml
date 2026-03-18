@@ -27,7 +27,7 @@ spec:
           ports:
             - containerPort: 6379
               name: redis
-          command: ["redis-server", "--appendonly", "yes", "--requirepass", "$(REDIS_PASSWORD)"]
+          command: ["sh", "-c", "redis-server --appendonly yes --requirepass $REDIS_PASSWORD"]
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -43,12 +43,12 @@ spec:
               memory: 1Gi
           readinessProbe:
             exec:
-              command: ["redis-cli", "-a", "$(REDIS_PASSWORD)", "ping"]
+              command: ["sh", "-c", "redis-cli -a $REDIS_PASSWORD ping"]
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             exec:
-              command: ["redis-cli", "-a", "$(REDIS_PASSWORD)", "ping"]
+              command: ["sh", "-c", "redis-cli -a $REDIS_PASSWORD ping"]
             initialDelaySeconds: 15
             periodSeconds: 20
             failureThreshold: 3
