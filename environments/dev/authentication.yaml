@@ -3,9 +3,13 @@ image:
   repository: astha-platform/ms-authentication-service
   tag: "v1.0.0"
 config:
-  APP_NAME: "ms-authentication-service"
-  APP_PORT: "5000"
-  APP_LOG_LEVEL: "INFO"
+  APP_ENV: "dev"
+  PORT: "5000"
+  LOG_LEVEL: "info"
+  KEYCLOAK_BASE_URL: "https://auth.astha.ai"
+  KEYCLOAK_REALM: "astha-testbox"
+  KEYCLOAK_CLIENT_ID: "astha-testbox-connect"
+  OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
   secrets:

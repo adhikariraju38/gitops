@@ -3,14 +3,21 @@ image:
   repository: astha-platform/ms-user-management-service
   tag: "v1.0.0"
 config:
-  APP_NAME: "ms-user-management-service"
+  APP_NAME: "MsUserManagementService"
   APP_PORT: "5000"
+  APP_HOST: "0.0.0.0"
+  APP_DEBUG: "false"
   APP_LOG_LEVEL: "INFO"
   REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/0"
+  AUTH_SERVICE_URL: "http://ms-authentication-service.dev.svc.cluster.local:5000/api/v1"
+  AUTHZ_SERVICE_URL: "http://ms-authorization-service.dev.svc.cluster.local:5000/api/v1"
+  NOTIFY_SERVICE_URL: "http://ms-notification-service.dev.svc.cluster.local:5000/api/v1"
+  QUESTIONNAIRE_SERVICE_URL: "http://ms-questionnaires-service.dev.svc.cluster.local:5000/api/v1"
+  OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
   secrets:
     - key: dev-postgres-user-management-url
       property: DATABASE_URL
     - key: dev-stripe-api-key
-      property: STRIPE_API_KEY
+      property: STRIPE_SECRET_KEY

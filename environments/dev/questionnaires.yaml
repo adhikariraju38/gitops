@@ -5,13 +5,20 @@ image:
 config:
   APP_NAME: "ms-questionnaires-service"
   APP_PORT: "5000"
+  APP_DEBUG: "false"
   APP_LOG_LEVEL: "INFO"
   REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/0"
-  GCS_EVIDENCE_BUCKET: "astha-evidence-dev"
+  STORAGE_PROVIDER: "gcs"
+  STORAGE_BUCKET: "astha-evidence-dev"
+  SEEDER_ALLOW_SEEDING: "true"
+  SEEDER_RELEASE_TAG: "Release_V_2_1"
+  GITHUB_QUESTIONS_OWNER: "AsthaAi"
+  GITHUB_QUESTIONS_REPO: "safe-framework-questions"
+  OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
   secrets:
     - key: dev-postgres-questionnaires-url
       property: DATABASE_URL
     - key: dev-github-api-token
-      property: GITHUB_API_TOKEN
+      property: GITHUB_TOKEN

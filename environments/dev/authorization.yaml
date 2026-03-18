@@ -5,8 +5,17 @@ image:
 config:
   APP_NAME: "ms-authorization-service"
   APP_PORT: "5000"
+  APP_DEBUG: "false"
   APP_LOG_LEVEL: "INFO"
+  APP_ALLOW_SEEDING: "true"
+  APP_WORKERS: "1"
+  OPA_URL: "http://opa.dev.svc.cluster.local:8181"
+  OPA_TIMEOUT: "5"
   REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/0"
+  CACHE_ENABLED: "true"
+  CACHE_TTL: "60"
+  METRICS_ENABLED: "false"
+  OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
   secrets:
