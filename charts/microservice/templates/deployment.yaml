@@ -81,9 +81,14 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: cache
+              mountPath: /home/app/.cache
       volumes:
         - name: tmp
           emptyDir:
             medium: Memory
             sizeLimit: 128Mi
+        - name: cache
+          emptyDir:
+            sizeLimit: 256Mi
 {{- end }}
