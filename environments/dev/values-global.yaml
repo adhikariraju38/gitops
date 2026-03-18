@@ -29,3 +29,17 @@ pdb:
 
 rollout:
   enabled: false
+
+# Dev images use uv which needs write access to /app and /home/app/.cache
+# Staging/prod should use readOnlyRootFilesystem: true with proper Dockerfiles
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  runAsNonRoot: false
+  seccompProfile:
+    type: RuntimeDefault
