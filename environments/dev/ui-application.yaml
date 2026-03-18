@@ -1,7 +1,7 @@
 serviceName: ms-ui-application
 image:
   repository: astha-platform/ms-ui-application
-  tag: "v1.0.3"
+  tag: "sha-c5054d4"
 containerPort: 3000
 service:
   type: LoadBalancer
