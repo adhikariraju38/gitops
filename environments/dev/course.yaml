@@ -31,7 +31,7 @@ config:
   S3_BUCKET_NAME: "astha-certificates-dev"
   S3_REGION: "us-central1"
   STRIPE_PRODUCT_ID: "prod_TzU3vqNT2gu5Af"
-  OTEL_ENABLED: "true"
+  OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
   secrets:

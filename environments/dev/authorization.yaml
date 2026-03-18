@@ -15,7 +15,7 @@ config:
   CACHE_ENABLED: "true"
   CACHE_TTL: "60"
   METRICS_ENABLED: "false"
-  OTEL_ENABLED: "true"
+  OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
   secrets:
