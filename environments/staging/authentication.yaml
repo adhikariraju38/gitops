@@ -1,17 +1,14 @@
 serviceName: ms-authentication-service
-
 image:
   repository: astha-platform/ms-authentication-service
-  tag: "latest"
-
+  tag: "v1.0.0"
 config:
   SERVICE_NAME: "ms-authentication-service"
-  DATABASE_HOST: "10.1.0.2"  # Cloud SQL private IP (update after deploy)
+  DATABASE_HOST: "10.49.96.3" # Cloud SQL private IP (update after deploy)
   DATABASE_NAME: "auth"
   DATABASE_PORT: "5432"
   REDIS_HOST: "redis.staging.svc.cluster.local"
   REDIS_PORT: "6379"
-
 externalSecret:
   enabled: true
   secrets:

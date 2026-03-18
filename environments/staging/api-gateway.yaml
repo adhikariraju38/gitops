@@ -1,17 +1,12 @@
 serviceName: ms-api-gateway-service
-
 image:
   repository: astha-platform/ms-api-gateway-service
-  tag: "latest"
-
+  tag: "v1.0.0"
 containerPort: 8080
-
 service:
   port: 8080
-
 config:
   SERVICE_NAME: "ms-api-gateway-service"
-
 probes:
   startup:
     enabled: true
@@ -28,9 +23,7 @@ probes:
     path: /ready
     periodSeconds: 5
     failureThreshold: 3
-
 externalSecret:
   enabled: false
-
 podLabels:
   tier: gateway

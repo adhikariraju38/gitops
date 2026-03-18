@@ -1,19 +1,16 @@
 serviceName: ms-authorization-service
-
 image:
   repository: astha-platform/ms-authorization-service
-  tag: "latest"
-
+  tag: "v1.0.0"
 config:
   SERVICE_NAME: "ms-authorization-service"
-  DATABASE_HOST: "10.1.0.2"
+  DATABASE_HOST: "10.49.96.3"
   DATABASE_NAME: "authz_service"
   DATABASE_PORT: "5432"
   REDIS_HOST: "redis.dev.svc.cluster.local"
   REDIS_PORT: "6379"
-
 externalSecret:
   enabled: true
   secrets:
-    - key: postgres-authz_service-password
+    - key: dev-postgres-authorization-password
       property: DATABASE_PASSWORD

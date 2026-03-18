@@ -1,18 +1,15 @@
 serviceName: ms-questionnaires-service
-
 image:
   repository: astha-platform/ms-questionnaires-service
-  tag: "latest"
-
+  tag: "v1.0.0"
 config:
   SERVICE_NAME: "ms-questionnaires-service"
-  DATABASE_HOST: "10.1.0.2"
+  DATABASE_HOST: "10.49.96.3"
   DATABASE_NAME: "questionnaires"
   DATABASE_PORT: "5432"
   REDIS_HOST: "redis.staging.svc.cluster.local"
   REDIS_PORT: "6379"
   GCS_EVIDENCE_BUCKET: "astha-evidence-staging"
-
 externalSecret:
   enabled: true
   secrets:
