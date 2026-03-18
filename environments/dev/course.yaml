@@ -3,17 +3,15 @@ image:
   repository: astha-platform/ms-course-service
   tag: "v1.0.0"
 config:
-  SERVICE_NAME: "ms-course-service"
-  DATABASE_HOST: "10.49.96.3"
-  DATABASE_NAME: "courses"
-  DATABASE_PORT: "5432"
-  REDIS_HOST: "redis.dev.svc.cluster.local"
-  REDIS_PORT: "6379"
+  APP_NAME: "ms-course-service"
+  APP_PORT: "5000"
+  APP_LOG_LEVEL: "INFO"
+  REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/2"
   GCS_CERTIFICATES_BUCKET: "astha-certificates-dev"
 externalSecret:
   enabled: true
   secrets:
-    - key: dev-postgres-course-password
-      property: DATABASE_PASSWORD
+    - key: dev-postgres-course-url
+      property: DATABASE_URL
     - key: dev-github-api-token
       property: GITHUB_API_TOKEN

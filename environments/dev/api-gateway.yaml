@@ -7,6 +7,22 @@ service:
   port: 8080
 config:
   SERVICE_NAME: "ms-api-gateway-service"
+  NAMESPACE: "dev"
+  UMS_SERVICE_HOST: "ms-user-management-service.dev.svc.cluster.local"
+  NOTIFICATION_SERVICE_HOST: "ms-notification-service.dev.svc.cluster.local"
+  AUTHENTICATION_SERVICE_HOST: "ms-authentication-service.dev.svc.cluster.local"
+  AUTHORIZATION_SERVICE_HOST: "ms-authorization-service.dev.svc.cluster.local"
+  QUESTIONNAIRES_SERVICE_HOST: "ms-questionnaires-service.dev.svc.cluster.local"
+  COURSE_SERVICE_HOST: "ms-course-service.dev.svc.cluster.local"
+  UI_APPLICATION_HOST: "ms-ui-application.dev.svc.cluster.local"
+  UMS_SERVICE_PORT: "5000"
+  NOTIFICATION_SERVICE_PORT: "5000"
+  AUTHENTICATION_SERVICE_PORT: "5000"
+  AUTHORIZATION_SERVICE_PORT: "5000"
+  QUESTIONNAIRES_SERVICE_PORT: "5000"
+  COURSE_SERVICE_PORT: "5000"
+  UI_APPLICATION_PORT: "3000"
+  FRONTEND_ORIGIN: "http://ms-ui-application.dev.svc.cluster.local:3000"
 probes:
   startup:
     enabled: true
