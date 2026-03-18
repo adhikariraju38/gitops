@@ -1,7 +1,7 @@
 serviceName: ms-questionnaires-service
 image:
   repository: astha-platform/ms-questionnaires-service
-  tag: "sha-ad0e0ba"
+  tag: "sha-c0b6c7c"
 config:
   APP_NAME: "ms-questionnaires-service"
   APP_PORT: "5000"
