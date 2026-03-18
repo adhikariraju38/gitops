@@ -23,7 +23,7 @@ config:
   QUESTIONNAIRES_SERVICE_PORT: "5000"
   COURSE_SERVICE_PORT: "5000"
   UI_APPLICATION_PORT: "3000"
-  FRONTEND_ORIGIN: "http://136.113.37.165:3000"
+  FRONTEND_ORIGIN: "http://34.68.237.85:3000"
 probes:
   startup:
     enabled: true
@@ -44,3 +44,11 @@ externalSecret:
   enabled: false
 podLabels:
   tier: gateway
+extraVolumes:
+  - name: envoy-config
+    configMap:
+      name: envoy-config
+extraVolumeMounts:
+  - name: envoy-config
+    mountPath: /etc/envoy
+    readOnly: true
