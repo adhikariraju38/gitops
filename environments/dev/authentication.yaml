@@ -1,7 +1,7 @@
 serviceName: ms-authentication-service
 image:
   repository: astha-platform/ms-authentication-service
-  tag: "sha-7c6d6c4"
+  tag: "sha-9d207ed"
 config:
   APP_ENV: "dev"
   PORT: "5000"
