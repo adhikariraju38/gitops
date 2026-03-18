@@ -9,7 +9,7 @@ config:
   KEYCLOAK_BASE_URL: "http://keycloak.dev.svc.cluster.local:8080"
   KEYCLOAK_REALM: "astha-dev"
   KEYCLOAK_CLIENT_ID: "astha-platform"
-  OTEL_ENABLED: "false"
+  OTEL_ENABLED: "true"
 externalSecret:
   enabled: true
   secrets:

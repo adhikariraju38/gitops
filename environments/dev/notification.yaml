@@ -20,7 +20,7 @@ config:
   COMPANY_LINKEDIN_IMAGE_URL: "https://s3.staging.astha.ai/LinkedIn.png"
   COMPANY_LINKEDIN_URL: "https://www.linkedin.com/company/asthaai/"
   I18N_DEFAULT_LOCALE: "en"
-  OTEL_ENABLED: "false"
+  OTEL_ENABLED: "true"
 externalSecret:
   enabled: true
   secrets:
