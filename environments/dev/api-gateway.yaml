@@ -1,7 +1,7 @@
 serviceName: ms-api-gateway-service
 image:
   repository: astha-platform/ms-api-gateway-service
-  tag: "sha-5239af1"
+  tag: "sha-11bcd77"
 containerPort: 8080
 service:
   type: LoadBalancer
