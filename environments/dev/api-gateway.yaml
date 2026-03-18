@@ -44,11 +44,3 @@ externalSecret:
   enabled: false
 podLabels:
   tier: gateway
-extraVolumes:
-  - name: envoy-config
-    configMap:
-      name: envoy-config
-extraVolumeMounts:
-  - name: envoy-config
-    mountPath: /etc/envoy
-    readOnly: true
