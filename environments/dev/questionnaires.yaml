@@ -21,7 +21,7 @@ config:
   UMS_BASE_URL: "http://ms-user-management-service.dev.svc.cluster.local:5000/api/v1"
   UMS_TIMEOUT: "30.0"
   UMS_CALLBACK_BASE_URL: "http://ms-user-management-service.dev.svc.cluster.local:5000/api/v1"
-  OTEL_ENABLED: "false"
+  OTEL_ENABLED: "true"
 externalSecret:
   enabled: true
   secrets:
