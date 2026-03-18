@@ -19,6 +19,8 @@ spec:
                   path: infrastructure/databases
                 - component: gateway
                   path: infrastructure/gateway
+                - component: keycloak
+                  path: infrastructure/keycloak
           - list:
               elements:
                 - env: dev

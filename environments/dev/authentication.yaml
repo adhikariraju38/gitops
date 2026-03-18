@@ -6,9 +6,9 @@ config:
   APP_ENV: "dev"
   PORT: "5000"
   LOG_LEVEL: "info"
-  KEYCLOAK_BASE_URL: "https://auth.astha.ai"
-  KEYCLOAK_REALM: "astha-testbox"
-  KEYCLOAK_CLIENT_ID: "astha-testbox-connect"
+  KEYCLOAK_BASE_URL: "http://keycloak.dev.svc.cluster.local:8080"
+  KEYCLOAK_REALM: "astha-dev"
+  KEYCLOAK_CLIENT_ID: "astha-platform"
   OTEL_ENABLED: "false"
 externalSecret:
   enabled: true
