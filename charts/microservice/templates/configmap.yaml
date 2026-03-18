@@ -5,6 +5,10 @@ metadata:
   labels:
     {{- include "ms.labels" . | nindent 4 }}
 data:
+  {{- /* Auto-set OTEL_SERVICE_NAME from serviceName if not explicitly overridden */}}
+  {{- if not (hasKey .Values.config "OTEL_SERVICE_NAME") }}
+  OTEL_SERVICE_NAME: {{ .Values.serviceName | quote }}
+  {{- end }}
   {{- range $key, $value := .Values.config }}
   {{ $key }}: {{ $value | quote }}
   {{- end }}

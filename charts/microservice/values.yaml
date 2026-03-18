@@ -52,7 +52,6 @@ resources:
 config:
   LOG_LEVEL: "info"
   OTEL_EXPORTER_OTLP_ENDPOINT: "http://signoz-a9941162-otel-collector.observability:4317"
-  OTEL_SERVICE_NAME: "my-service"
 
 # --- ServiceAccount ---
 serviceAccount:
