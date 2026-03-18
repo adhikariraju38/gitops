@@ -8,6 +8,7 @@ config:
   APP_DEBUG: "false"
   APP_LOG_LEVEL: "INFO"
   APP_ALLOW_SEEDING: "true"
+  SEEDER_DIR: "/app/seeders"
   APP_WORKERS: "1"
   OPA_URL: "http://opa.dev.svc.cluster.local:8181"
   OPA_TIMEOUT: "5"
