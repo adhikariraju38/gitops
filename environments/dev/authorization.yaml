@@ -1,7 +1,7 @@
 serviceName: ms-authorization-service
 image:
   repository: astha-platform/ms-authorization-service
-  tag: "sha-1117163"
+  tag: "sha-86a391f"
 config:
   APP_NAME: "ms-authorization-service"
   APP_PORT: "5000"
