@@ -1,7 +1,7 @@
 serviceName: ms-notification-service
 image:
   repository: astha-platform/ms-notification-service
-  tag: "v1.0.0"
+  tag: "v1.1.0"
 config:
   APP_NAME: "notification-service"
   APP_PORT: "5000"
