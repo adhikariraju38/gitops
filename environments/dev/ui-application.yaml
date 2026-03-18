@@ -1,14 +1,14 @@
 serviceName: ms-ui-application
 image:
   repository: astha-platform/ms-ui-application
-  tag: "v1.0.0"
+  tag: "v1.0.1"
 containerPort: 3000
 service:
   type: LoadBalancer
   port: 3000
 config:
   SERVICE_NAME: "ms-ui-application"
-  NEXT_PUBLIC_API_URL: "http://ms-api-gateway-service.dev.svc.cluster.local:8080"
+  NEXT_PUBLIC_API_URL: "http://34.68.237.85:8080"
 probes:
   startup:
     enabled: true
