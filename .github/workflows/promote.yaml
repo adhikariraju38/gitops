@@ -1,0 +1,122 @@
+# =============================================================================
+# Environment Promotion Workflow
+# =============================================================================
+# Promotes a service's image tag from one environment to another.
+#
+# Flow:
+#   dev → staging  (manual trigger, requires staging approval)
+#   staging → prod (manual trigger, requires production approval)
+#
+# Usage:
+#   gh workflow run promote.yaml \
+#     -f service=ms-authentication-service \
+#     -f from=dev \
+#     -f to=staging
+#
+# =============================================================================
+
+name: Promote Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Service to promote"
+        required: true
+        type: choice
+        options:
+          - ms-authentication-service
+          - ms-authorization-service
+          - ms-user-management-service
+          - ms-course-service
+          - ms-notification-service
+          - ms-questionnaires-service
+          - ms-api-gateway-service
+          - ms-ui-application
+      from:
+        description: "Source environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+      to:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  validate:
+    name: Validate Promotion
+    runs-on: ubuntu-latest
+    outputs:
+      values_file: ${{ steps.resolve.outputs.values_file }}
+      current_tag: ${{ steps.resolve.outputs.current_tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve values file
+        id: resolve
+        run: |
+          # Convert service name to values file
+          # ms-authentication-service → authentication.yaml
+          VALUES_FILE=$(echo "${{ inputs.service }}" | sed 's/^ms-//' | sed 's/-service$//')".yaml"
+
+          # Handle ui-application (no -service suffix)
+          if [ ! -f "environments/${{ inputs.from }}/${VALUES_FILE}" ]; then
+            VALUES_FILE=$(echo "${{ inputs.service }}" | sed 's/^ms-//')".yaml"
+          fi
+
+          # Get current tag from source env
+          CURRENT_TAG=$(yq '.image.tag' "environments/${{ inputs.from }}/${VALUES_FILE}")
+
+          echo "values_file=${VALUES_FILE}" >> "$GITHUB_OUTPUT"
+          echo "current_tag=${CURRENT_TAG}" >> "$GITHUB_OUTPUT"
+          echo "Promoting ${{ inputs.service }}: ${CURRENT_TAG} from ${{ inputs.from }} → ${{ inputs.to }}"
+
+      - name: Validate promotion path
+        run: |
+          if [ "${{ inputs.from }}" = "dev" ] && [ "${{ inputs.to }}" != "staging" ]; then
+            echo "ERROR: dev can only promote to staging"
+            exit 1
+          fi
+          if [ "${{ inputs.from }}" = "staging" ] && [ "${{ inputs.to }}" != "production" ]; then
+            echo "ERROR: staging can only promote to production"
+            exit 1
+          fi
+
+  promote:
+    name: Promote to ${{ inputs.to }}
+    runs-on: ubuntu-latest
+    needs: validate
+    # GitHub Environment protection rules (approval gates)
+    environment: ${{ inputs.to }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy image tag to target environment
+        run: |
+          VALUES_FILE="${{ needs.validate.outputs.values_file }}"
+          TAG="${{ needs.validate.outputs.current_tag }}"
+
+          echo "Setting environments/${{ inputs.to }}/${VALUES_FILE} image.tag to ${TAG}"
+          yq -i '.image.tag = "'${TAG}'"' "environments/${{ inputs.to }}/${VALUES_FILE}"
+
+          cat "environments/${{ inputs.to }}/${VALUES_FILE}"
+
+      - name: Commit and push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --cached --quiet && echo "No changes needed" && exit 0
+          git commit -m "promote(${{ inputs.service }}): ${{ inputs.from }} → ${{ inputs.to }} (tag: ${{ needs.validate.outputs.current_tag }})"
+          git push
+
+          echo "Promoted ${{ inputs.service }} to ${{ inputs.to }}"
+          echo "ArgoCD will sync the change automatically (if auto-sync is enabled)"
