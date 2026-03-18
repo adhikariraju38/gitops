@@ -9,7 +9,6 @@ config:
   APP_LOG_LEVEL: "INFO"
   APP_ENVIRONMENT: "development"
   APP_API_PREFIX: "/api/v1"
-  REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/0"
   STORAGE_PROVIDER: "gcs"
   STORAGE_BUCKET: "astha-evidence-dev"
   GITHUB_QUESTIONS_OWNER: "AsthaAi"
@@ -30,3 +29,5 @@ externalSecret:
       property: DATABASE_URL
     - key: dev-github-api-token
       property: GITHUB_TOKEN
+    - key: dev-redis-url-db0
+      property: REDIS_URL

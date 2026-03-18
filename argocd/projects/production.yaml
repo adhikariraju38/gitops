@@ -14,8 +14,28 @@ spec:
     - group: ""
       kind: Namespace
   namespaceResourceWhitelist:
-    - group: "*"
-      kind: "*"
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Secret
+    - group: ""
+      kind: Service
+    - group: ""
+      kind: ServiceAccount
+    - group: ""
+      kind: PersistentVolumeClaim
+    - group: apps
+      kind: Deployment
+    - group: apps
+      kind: StatefulSet
+    - group: autoscaling
+      kind: HorizontalPodAutoscaler
+    - group: policy
+      kind: PodDisruptionBudget
+    - group: external-secrets.io
+      kind: ExternalSecret
+    - group: argoproj.io
+      kind: Rollout
   # Sync windows — only allow syncs Mon-Fri 9-17 UTC
   syncWindows:
     - kind: allow

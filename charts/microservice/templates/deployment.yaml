@@ -26,9 +26,10 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ include "ms.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        seccompProfile:
-          type: RuntimeDefault
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Values.serviceName }}
           image: {{ include "ms.image" . }}

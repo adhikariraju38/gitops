@@ -12,7 +12,6 @@ config:
   APP_WORKERS: "1"
   OPA_URL: "http://opa.dev.svc.cluster.local:8181"
   OPA_TIMEOUT: "5"
-  REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/0"
   CACHE_ENABLED: "true"
   CACHE_TTL: "60"
   METRICS_ENABLED: "false"
@@ -22,3 +21,5 @@ externalSecret:
   secrets:
     - key: dev-postgres-authorization-url
       property: DATABASE_URL
+    - key: dev-redis-url-db0
+      property: REDIS_URL

@@ -9,11 +9,9 @@ config:
   APP_DEBUG: "false"
   APP_LOG_LEVEL: "INFO"
   APP_ENVIRONMENT: "development"
-  REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/0"
   FRONTEND_URL: "http://136.113.37.165:3000"
   FRONTEND_REGISTRATION_URL_TTL_HOURS: "24"
   FRONTEND_OTP_TTL_MINUTES: "10"
-  SECURITY_SECRET_KEY: "change-me-in-production"
   SECURITY_ALGORITHM: "HS256"
   AUTH_SERVICE_URL: "http://ms-authentication-service.dev.svc.cluster.local:5000/api/v1"
   AUTH_SERVICE_TIMEOUT: "10.0"
@@ -37,3 +35,7 @@ externalSecret:
       property: DATABASE_URL
     - key: dev-stripe-api-key
       property: STRIPE_SECRET_KEY
+    - key: dev-security-secret-key
+      property: SECURITY_SECRET_KEY
+    - key: dev-redis-url-db0
+      property: REDIS_URL

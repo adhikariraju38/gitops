@@ -9,7 +9,6 @@ config:
   APP_LOG_LEVEL: "INFO"
   APP_ENVIRONMENT: "development"
   APP_API_PREFIX: "/api/v1"
-  REDIS_URL: "redis://redis.dev.svc.cluster.local:6379/2"
   REDIS_DEFAULT_TTL: "3600"
   CACHE_ENABLED: "true"
   CACHE_TTL_SECONDS: "3600"
@@ -42,3 +41,5 @@ externalSecret:
       property: GITHUB_TOKEN
     - key: dev-stripe-webhook-secret
       property: STRIPE_WEBHOOK_SECRET
+    - key: dev-redis-url-db2
+      property: REDIS_URL

@@ -23,11 +23,17 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:7-alpine
+          image: redis:7.4.3-alpine
           ports:
             - containerPort: 6379
               name: redis
-          command: ["redis-server", "--appendonly", "yes"]
+          command: ["redis-server", "--appendonly", "yes", "--requirepass", "$(REDIS_PASSWORD)"]
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-auth
+                  key: password
           resources:
             requests:
               cpu: 250m
@@ -37,9 +43,15 @@ spec:
               memory: 1Gi
           readinessProbe:
             exec:
-              command: ["redis-cli", "ping"]
+              command: ["redis-cli", "-a", "$(REDIS_PASSWORD)", "ping"]
             initialDelaySeconds: 5
             periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "-a", "$(REDIS_PASSWORD)", "ping"]
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
           volumeMounts:
             - name: redis-data
               mountPath: /data
@@ -67,3 +79,20 @@ spec:
       name: redis
   selector:
     app: redis
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: redis-auth
+  namespace: dev
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: gcp-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: redis-auth
+  data:
+    - secretKey: password
+      remoteRef:
+        key: dev-redis-password

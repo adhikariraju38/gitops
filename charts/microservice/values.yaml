@@ -61,13 +61,20 @@ serviceAccount:
   annotations: {}
 
 # --- Security Context ---
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
 securityContext:
   allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
   capabilities:
     drop:
       - ALL
-  seccompProfile:
-    type: RuntimeDefault
 
 # --- Extra Pod Labels ---
 podLabels:
