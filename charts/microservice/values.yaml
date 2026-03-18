@@ -25,17 +25,17 @@ service:
 probes:
   startup:
     enabled: true
-    path: /health
+    path: /ping
     periodSeconds: 5
     failureThreshold: 60
   liveness:
     enabled: true
-    path: /health
+    path: /ping
     periodSeconds: 15
     failureThreshold: 3
   readiness:
     enabled: true
-    path: /health
+    path: /ping
     periodSeconds: 10
     failureThreshold: 3
 
