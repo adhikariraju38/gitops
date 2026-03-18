@@ -4,6 +4,7 @@ image:
   tag: "v1.0.0"
 containerPort: 8080
 service:
+  type: LoadBalancer
   port: 8080
 config:
   SERVICE_NAME: "ms-api-gateway-service"

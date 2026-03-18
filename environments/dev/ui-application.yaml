@@ -4,6 +4,7 @@ image:
   tag: "v1.0.0"
 containerPort: 3000
 service:
+  type: LoadBalancer
   port: 3000
 config:
   SERVICE_NAME: "ms-ui-application"
