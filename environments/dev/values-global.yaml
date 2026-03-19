@@ -19,7 +19,7 @@ resources:
 
 config:
   LOG_LEVEL: "debug"
-  OTEL_EXPORTER_OTLP_ENDPOINT: "http://signoz-df69d76b-otel-collector.observability:4318"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://signoz-6306d6e3-otel-collector.observability:4318"
 
 hpa:
   enabled: false
