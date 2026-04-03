@@ -56,7 +56,7 @@ jobs:
       values_file: ${{ steps.resolve.outputs.values_file }}
       current_tag: ${{ steps.resolve.outputs.current_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Resolve values file
         id: resolve
@@ -95,7 +95,7 @@ jobs:
     # GitHub Environment protection rules (approval gates)
     environment: ${{ inputs.to }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
